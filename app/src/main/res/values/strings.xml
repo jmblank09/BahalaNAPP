@@ -11,4 +11,10 @@
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="signup">Sign Up</string>
+    <string name="firstname">First Name</string>
+    <string name="lastname">Last Name</string>
+    <string name="repassword">Re-type Password</string>
+    <string name="create">Create</string>
+    <string name="alreadyhave">Already have an account?</string>
+    <string name="loginhere">Login here</string>
 </resources>
