@@ -5,4 +5,6 @@
     <string name="bahalana_button">Bahala na</string>
     <string name="top10_textview">Top 10 Restaurants</string>
     <string name="viewallresto_textview"><u>View all restaurants</u></string>
+    <string name="back"> &#60; Back </string>
+    <string name="allresto">All Restaurants</string>
 </resources>
