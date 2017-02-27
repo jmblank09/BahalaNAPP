@@ -87,13 +87,13 @@ public class RestaurantsActivity extends AppCompatActivity {
             }
         });
 
-//        user_textView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent();
-//                startActivity(intent);
-//            }
-//        });
+        user_textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RestaurantsActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
 
         back_textView.setOnClickListener(new View.OnClickListener() {
             @Override

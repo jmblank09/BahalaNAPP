@@ -73,13 +73,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        signup_textView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent();
-//                startActivity(intent);
-//            }
-//        });
+        signup_textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
 
         allResto_textView.setOnClickListener(new View.OnClickListener() {
             @Override
