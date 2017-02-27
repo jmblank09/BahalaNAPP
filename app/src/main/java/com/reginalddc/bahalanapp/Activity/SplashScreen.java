@@ -1,10 +1,12 @@
-package com.reginalddc.bahalanapp;
+package com.reginalddc.bahalanapp.Activity;
 
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
+
+import com.reginalddc.bahalanapp.R;
 
 public class SplashScreen extends AppCompatActivity {
 
