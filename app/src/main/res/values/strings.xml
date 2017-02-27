@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">BahalaNAPP</string>
     <string name="splashscreen_appname">Bahala napp</string>
+    <string name="tapmona_textview">Tap mo na!</string>
+    <string name="bahalana_button">Bahala na</string>
+    <string name="top10_textview">Top 10 Restaurants</string>
+    <string name="viewallresto_textview"><u>View all restaurants</u></string>
 </resources>
