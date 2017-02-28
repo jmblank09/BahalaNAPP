@@ -59,17 +59,19 @@ public class SpecificRestaurantActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().replace(R.id.fragment_layout, new RestaurantDetailFragment()).commit();
 
         profile_description_textView.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            fragmentManager.beginTransaction().replace(R.id.fragment_layout, new RestaurantDetailFragment()).commit();
-        }
-    });
+            @Override
+            public void onClick(View v) {
+                fragmentManager.beginTransaction().replace(R.id.fragment_layout, new RestaurantDetailFragment()).commit();
+                }
+        });
 
-//        map_location_textView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                fragmentManager.beginTransaction().replace(R.id.fragment_layout, new MapLocationFragment()).commit();
-//            }
-//        });
+        map_location_textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                fragmentManager.beginTransaction().replace(R.id.fragment_layout, new MapsActivity()).commit();
+                Intent intent = new Intent(SpecificRestaurantActivity.this, MapsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
