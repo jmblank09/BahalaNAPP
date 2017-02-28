@@ -17,4 +17,17 @@
     <string name="create">Create</string>
     <string name="alreadyhave">Already have an account?</string>
     <string name="loginhere">Login here</string>
+    <string name="resto_name">Dimsum Treats</string>
+    <string name="resto_details">Profile Description</string>
+    <string name="map_location">Map Location</string>
+    <string name="opening_hours">Opening Hours:</string>
+    <string name="best_seller">Best Sellers:</string>
+    <string name="price_range">Price Range:</string>
+    <string name="contact_us">Contact Us:</string>
+    <string name="visit_us">Visit Us:</string>
+    <string name="detailed_location">Detail Location:</string>
+    <string name="rate_us">Rate Us:</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

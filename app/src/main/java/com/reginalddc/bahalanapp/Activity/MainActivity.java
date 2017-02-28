@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getApplicationContext(), adapter.getItem(position).name, Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(MainActivity.this, SpecificRestaurantActivity.class);
+                startActivity(intent);
             }
         });
 

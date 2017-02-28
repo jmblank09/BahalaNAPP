@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_specific_restaurant"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1"
+    tools:context="com.reginalddc.bahalanapp.Activity.SpecificRestaurantActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".07"
+        android:layout_gravity="center_horizontal">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/back"
+            android:textSize="20sp"
+            android:textColor="@color/yellowColor"
+            android:id="@+id/back_textView"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Login"
+            android:textSize="20sp"
+            android:textColor="@color/yellowColor"
+            android:id="@+id/user_textView"
+            android:layout_alignTop="@+id/back_textView"
+            android:layout_toStartOf="@+id/user_imageView" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/profile_active"
+            android:id="@+id/user_imageView"
+            android:layout_alignTop="@+id/user_textView"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".33"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="186dp"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight=".9"
+            android:src="@drawable/dimsum"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:background="@drawable/redborder"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".1"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/resto_name"
+            android:textSize="25sp"
+            android:textColor="@color/blackColor"
+            android:id="@+id/resto_title_textView"
+            android:textStyle="bold"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_gravity="bottom"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".1">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="1"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
+                android:background="@color/redColor"
+                android:text="@string/resto_details"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:textColor="@color/whiteColor"
+                android:gravity="center_horizontal|center_vertical"
+                android:id="@+id/profile_description">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
+                android:background="@color/lightGrayColor"
+                android:text="@string/map_location"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:gravity="center_horizontal|center_vertical"
+                android:id="@+id/map_location">
+
+            </TextView>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".5"
+        android:id="@+id/fragment_layout">
+
+    </RelativeLayout>
+</LinearLayout>

@@ -108,7 +108,8 @@
             android:layout_height="0dp"
             android:layout_weight=".85"
             android:id="@+id/resto_listView"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:scrollIndicators="right" />
 
         <TextView
             android:layout_width="match_parent"
