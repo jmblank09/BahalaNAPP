@@ -1,7 +1,11 @@
 package com.reginalddc.bahalanapp.Activity;
 
+import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -15,6 +19,7 @@ import com.reginalddc.bahalanapp.R;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    TextView back_textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +29,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        back_textView = (TextView) findViewById(R.id.back_textView);
+
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/arial_rounded.ttf");
+
+        back_textView.setTypeface(typeface);
+
+        back_textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MapsActivity.this, SpecificRestaurantActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
 
@@ -41,8 +61,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng iics = new LatLng(14.610165, 120.991958);
+        mMap.addMarker(new MarkerOptions().position(iics).title("IICS"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(iics));
     }
 }
