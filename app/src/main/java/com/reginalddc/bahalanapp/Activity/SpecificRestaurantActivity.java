@@ -68,7 +68,7 @@ public class SpecificRestaurantActivity extends AppCompatActivity {
         map_location_textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                fragmentManager.beginTransaction().replace(R.id.fragment_layout, new MapsActivity()).commit();
+//                fragmentManager.beginTransaction().replace(R.id.fragment_layout, new MapFragment()).commit();
                 Intent intent = new Intent(SpecificRestaurantActivity.this, MapsActivity.class);
                 startActivity(intent);
             }
