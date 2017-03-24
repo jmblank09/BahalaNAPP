@@ -64,16 +64,16 @@
             android:layout_gravity="center_horizontal" />
 
         <Button
+            android:id="@+id/login_button"
             android:layout_width="230dp"
             android:layout_height="35dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
             android:background="@drawable/loginbuttonborder"
+            android:onClick="loginAccount"
             android:text="@string/login"
             android:textColor="@color/whiteColor"
-            android:textSize="20sp"
-            android:id="@+id/login_button"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center_horizontal"
-            android:onClick="loginAccount" />
+            android:textSize="20sp" />
 
         <Button
             android:layout_width="230dp"

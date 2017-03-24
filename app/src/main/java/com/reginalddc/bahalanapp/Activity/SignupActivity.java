@@ -8,8 +8,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.reginalddc.bahalanapp.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -53,8 +65,52 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-    public void createAccount(View view) {
-        Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
-        startActivity(intent);
+    public void createAccount(View view) throws UnsupportedEncodingException, JSONException {
+        RequestParams params = new RequestParams();
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        JSONObject jsonParams = new JSONObject();
+
+
+        jsonParams.put("first_name", firstname_editText.getText().toString());
+        jsonParams.put("last_name", lastname_editText.getText().toString());
+        jsonParams.put("username", username_editText.getText().toString());
+        jsonParams.put("password", password_editText.getText().toString());
+        jsonParams.put("re-password", repassword_editText.getText().toString());
+
+        StringEntity entity = new StringEntity(jsonParams.toString());
+
+        client.post(null, "http://107.170.61.180/BahalaNAPP_API/users", entity, "application/json", new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    String response = new String(responseBody, "UTF-8");
+                    JSONObject obj = new JSONObject(response);
+                    JSONObject success = obj.getJSONObject("success");
+                    String success_response = success.getString("detail");
+
+                    Toast.makeText(getApplicationContext(), success_response, Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable error){
+                try {
+                    String response = new String(errorResponse, "UTF-8");
+                    JSONObject obj = new JSONObject(response);
+                    JSONObject err = obj.getJSONObject("error");
+                    String error_response = err.getString("detail");
+
+                    Toast.makeText(getApplicationContext(), error_response, Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }
