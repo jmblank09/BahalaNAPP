@@ -15,16 +15,16 @@ import java.util.ArrayList;
 /**
  * Created by reginalddc on 27/02/2017.
  */
-public class RestoAdapter extends ArrayAdapter<Resto> {
+public class RestoAdapter extends ArrayAdapter<RestoBaseAdapter> {
 
-    public RestoAdapter(Context context, ArrayList<Resto> resto){
-        super(context, 0, resto);
+    public RestoAdapter(Context context, ArrayList<RestoBaseAdapter> restoBaseAdapter){
+        super(context, 0, restoBaseAdapter);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
 
-        Resto resto = getItem(position);
+        RestoBaseAdapter restoBaseAdapter = getItem(position);
 
         if (convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.listview_toptenresto, parent, false);
@@ -39,8 +39,9 @@ public class RestoAdapter extends ArrayAdapter<Resto> {
         TextView name = (TextView) convertView.findViewById(R.id.resto_textView);
         TextView rank = (TextView) convertView.findViewById(R.id.rank_textView);
 
-        rank.setText(Integer.toString(resto.rank));
-        name.setText(resto.name);
+        int id = restoBaseAdapter.id;
+        rank.setText(Integer.toString(restoBaseAdapter.rank));
+        name.setText(restoBaseAdapter.name);
 
         return convertView;
     }

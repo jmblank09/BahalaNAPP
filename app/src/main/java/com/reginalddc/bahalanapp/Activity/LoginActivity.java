@@ -21,6 +21,7 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.reginalddc.bahalanapp.Model.User;
 import com.reginalddc.bahalanapp.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -51,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
 
         RequestParams params = new RequestParams();
 
-        AsyncHttpClient client = new AsyncHttpClient();
+        final AsyncHttpClient client = new AsyncHttpClient();
         JSONObject jsonParams = new JSONObject();
 
         jsonParams.put("username", username_editText.getText().toString());
@@ -66,19 +67,43 @@ public class LoginActivity extends AppCompatActivity {
                     String response = new String(responseBody, "UTF-8");
                     JSONObject obj = new JSONObject(response);
                     JSONObject meta = obj.getJSONObject("meta");
-                    String username = obj.getString("username");
-                    int userId = Integer.parseInt(obj.getString("id"));
-                    String token = meta.getString("token");
+                    final String username = obj.getString("username");
+                    final int userId = Integer.parseInt(obj.getString("id"));
+                    final String token = meta.getString("token");
 
-                    //add to model
-//                    Model model = new Model();
-//                    model.setToken(token);
-//                    model.setUserame(username);
-//                    model.setUserId(userId);
-                    Toast.makeText(getApplicationContext(), "Successful Login!", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
+                    AsyncHttpClient client1 = new AsyncHttpClient();
+                    client1.addHeader("Authorization", token);
+                    client1.get("http://107.170.61.180/BahalaNAPP_API/users/" + userId, new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            try {
+                                String response = new String(responseBody, "UTF-8");
+                                JSONObject obj = new JSONObject(response);
+                                String firstname = obj.getString("first_name");
+
+                                User user = new User(userId, username, token, firstname);
+                                Toast.makeText(getApplicationContext(), "Welcome " + firstname + "!", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            try {
+                                String response = new String(responseBody, "UTF-8");
+                                JSONObject obj = new JSONObject(response);
+                                String error_response = obj.getString("error");
+
+                                Toast.makeText(getApplicationContext(), error_response, Toast.LENGTH_LONG).show();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -96,9 +121,6 @@ public class LoginActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-//                Toast.makeText(getApplicationContext(), "Invalid credentials", Toast.LENGTH_LONG).show();
-//                error.printStackTrace();
-//                error.getCause();
             }
         });
     }

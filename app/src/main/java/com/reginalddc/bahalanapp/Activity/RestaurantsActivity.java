@@ -6,13 +6,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.reginalddc.bahalanapp.Model.Resto;
+import com.reginalddc.bahalanapp.Model.RestoBaseAdapter;
 import com.reginalddc.bahalanapp.Model.RestoAdapter;
+import com.reginalddc.bahalanapp.Model.User;
 import com.reginalddc.bahalanapp.R;
 
 import java.util.ArrayList;
@@ -35,50 +36,28 @@ public class RestaurantsActivity extends AppCompatActivity {
         user_textView.setTypeface(typeface);
         resto_textView.setTypeface(typeface);
 
-        ArrayList<Resto> arrayOfResto = new ArrayList<Resto>();
-        final RestoAdapter adapter = new RestoAdapter(getApplicationContext(), arrayOfResto);
+        final User user = new User();
+
+        if(user.getUser_ID() != 0) {
+            user_textView.setText("Hi, " + user.getFirstName() + "!");
+        } else {
+            user_textView.setText(getText(R.string.login));
+        }
+
+        ArrayList<RestoBaseAdapter> arrayOfRestoBaseAdapter = new ArrayList<RestoBaseAdapter>();
+        final RestoAdapter adapter = new RestoAdapter(getApplicationContext(), arrayOfRestoBaseAdapter);
         ListView listView = (ListView) findViewById(R.id.resto_listView);
         listView.setAdapter(adapter);
-        Resto firstResto = new Resto(1, "Dimsum Treats");
-        Resto secondResto = new Resto(2, "Mcdo");
-        Resto thirdResto = new Resto(3, "KFC");
-        Resto fourthResto = new Resto(4, "Perikoko");
-        Resto fifthResto = new Resto(5, "Big B Burgers");
-        Resto sixthResto = new Resto(6, "LoveLite");
-        Resto seventhResto = new Resto(7, "Sisig Express");
-        Resto eightResto = new Resto(8, "Extreme");
-        Resto ninthResto = new Resto(9, "Green Box");
-        Resto tenthResto = new Resto(10, "Gayuma ni Maria");
-        Resto eleventhResto = new Resto(11, "Ate Rita's");
-        Resto twelveResto = new Resto(12, "Chow King");
-        Resto thirteenResto = new Resto(13, "Chezron");
-        Resto fourteenResto = new Resto(14, "Happy n' Healthy");
-        Resto fifteenResto = new Resto(15, "Tapa King");
-        Resto sixteenResto = new Resto(16, "Chowpoint");
-        Resto seventeenResto = new Resto(17, "Extreme");
-        Resto eighteenResto = new Resto(18, "Yellow Cab");
-        Resto ninteenResto = new Resto(19, "Jollibee");
-        Resto twentiethResto = new Resto(20, "D Cream");
-        adapter.add(firstResto);
-        adapter.add(secondResto);
-        adapter.add(thirdResto);
-        adapter.add(fourthResto);
-        adapter.add(fifthResto);
-        adapter.add(sixthResto);
-        adapter.add(seventhResto);
-        adapter.add(eightResto);
-        adapter.add(ninthResto);
-        adapter.add(tenthResto);
-        adapter.add(eleventhResto);
-        adapter.add(twelveResto);
-        adapter.add(thirteenResto);
-        adapter.add(fourteenResto);
-        adapter.add(fifteenResto);
-        adapter.add(sixteenResto);
-        adapter.add(seventeenResto);
-        adapter.add(eighteenResto);
-        adapter.add(ninteenResto);
-        adapter.add(twentiethResto);
+
+        String arrayName[] = Resto.getRestoName();
+        int arrayId[] = Resto.getRestoId();
+        if (arrayName.length > 0) {
+            for (int i = 0; i < arrayName.length; i++){
+                int rank = i + 1;
+                RestoBaseAdapter addResto = new RestoBaseAdapter(rank, arrayName[i], arrayId[i]);
+                adapter.add(addResto);
+            }
+        }
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

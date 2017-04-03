@@ -70,15 +70,16 @@
             android:layout_weight=".4">
 
             <Button
+                android:id="@+id/bahalana_button"
                 android:layout_width="165dp"
                 android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/buttonborder"
+                android:onClick="randomizeResto"
                 android:text="@string/bahalana_button"
                 android:textAllCaps="false"
-                android:textSize="30sp"
                 android:textColor="@color/whiteColor"
-                android:background="@drawable/buttonborder"
-                android:id="@+id/bahalana_button"
-                android:layout_centerHorizontal="true"/>
+                android:textSize="30sp" />
 
             <TextView
                 android:layout_width="match_parent"

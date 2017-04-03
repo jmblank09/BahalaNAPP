@@ -7,21 +7,31 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.reginalddc.bahalanapp.Model.Resto;
+import com.reginalddc.bahalanapp.Model.RestoBaseAdapter;
 import com.reginalddc.bahalanapp.Model.RestoAdapter;
+import com.reginalddc.bahalanapp.Model.User;
 import com.reginalddc.bahalanapp.R;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Random;
+
+import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends AppCompatActivity {
 
     TextView signup_textView, tapmona_textView, top10_textView, allResto_textView;
     Button bahalana_button;
+    int RandomResto = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,31 +50,67 @@ public class MainActivity extends AppCompatActivity {
         top10_textView.setTypeface(typeface);
         allResto_textView.setTypeface(typeface);
         bahalana_button.setTypeface(typeface);
+        bahalana_button.setEnabled(false);
+        invokeWS();
+    }
 
-        ArrayList<Resto> arrayOfResto = new ArrayList<Resto>();
-        final RestoAdapter adapter = new RestoAdapter(getApplicationContext(), arrayOfResto);
+    private void invokeWS(){
+        AsyncHttpClient client1 = new AsyncHttpClient();
+        client1.get("http://107.170.61.180/BahalaNAPP_API/resto" , new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    String response = new String(responseBody, "UTF-8");
+                    JSONArray obj = new JSONArray(response);
+                    Resto resto = new Resto(obj);
+                    resto.dataRetrieval();
+                    willView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                try {
+                    String response = new String(responseBody, "UTF-8");
+                    JSONObject obj = new JSONObject(response);
+                    JSONObject err = new JSONObject("error");
+                    String error_response = err.getString("detail");
+
+                    Toast.makeText(getApplicationContext(), error_response, Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void willView() {
+
+        bahalana_button.setEnabled(true);
+
+        final User user = new User();
+
+        if(user.getUser_ID() != 0) {
+            signup_textView.setText("Hi, " + user.getFirstName() + "!");
+        } else {
+            signup_textView.setText(getText(R.string.login));
+        }
+
+        ArrayList<RestoBaseAdapter> arrayOfRestoBaseAdapter = new ArrayList<RestoBaseAdapter>();
+        final RestoAdapter adapter = new RestoAdapter(getApplicationContext(), arrayOfRestoBaseAdapter);
         ListView listView = (ListView) findViewById(R.id.resto_listView);
         listView.setAdapter(adapter);
-        Resto firstResto = new Resto(1, "Dimsum Treats");
-        Resto secondResto = new Resto(2, "Mcdo");
-        Resto thirdResto = new Resto(3, "KFC");
-        Resto fourthResto = new Resto(4, "Perikoko");
-        Resto fifthResto = new Resto(5, "Big B Burgers");
-        Resto sixthResto = new Resto(6, "LoveLite");
-        Resto seventhResto = new Resto(7, "Sisig Express");
-        Resto eightResto = new Resto(8, "Extreme");
-        Resto ninthResto = new Resto(9, "Green Box");
-        Resto tenthResto = new Resto(10, "Gayuma ni Maria");
-        adapter.add(firstResto);
-        adapter.add(secondResto);
-        adapter.add(thirdResto);
-        adapter.add(fourthResto);
-        adapter.add(fifthResto);
-        adapter.add(sixthResto);
-        adapter.add(seventhResto);
-        adapter.add(eightResto);
-        adapter.add(ninthResto);
-        adapter.add(tenthResto);
+        String arrayName[] = Resto.getRestoName();
+        int arrayId[] = Resto.getRestoId();
+        if (arrayName.length > 0) {
+            for (int i = 0; i < 10; i++){
+                int rank = i + 1;
+                RestoBaseAdapter addResto = new RestoBaseAdapter(rank, arrayName[i], arrayId[i]);
+                adapter.add(addResto);
+            }
+        }
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -78,8 +124,12 @@ public class MainActivity extends AppCompatActivity {
         signup_textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
+                if(user.getUser_ID() != 0) {
+                    Toast.makeText(getApplicationContext(), "LOGOUT KA NA BOY", Toast.LENGTH_LONG).show();
+                } else {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -90,5 +140,32 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    public void randomizeResto(View view) {
+        int randomNumber = randInt();
+
+        int arrayID[] = Resto.getRestoId();
+        String arrayName[] = Resto.getRestoName();
+
+        Resto.setSelectedRestoId(arrayID[randomNumber]);
+        tapmona_textView.setText(arrayName[randomNumber]);
+
+        tapmona_textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SpecificRestaurantActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private static int randInt() {
+
+        Random rand = new Random();
+
+        int randomNum = rand.nextInt((27 - 0) + 1) + 0;
+
+        return randomNum;
     }
 }
