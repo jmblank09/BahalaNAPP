@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -181,8 +182,12 @@ public class MainActivity extends AppCompatActivity {
         String arrayName[] = Resto.getRestoName();
 
         Resto.setSelectedRestoId(arrayID[randomNumber]);
+        if (arrayName[randomNumber].length() > 15) {
+            tapmona_textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_greater_10));
+        } else {
+            tapmona_textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_lesser_10));
+        }
         tapmona_textView.setText(arrayName[randomNumber]);
-
         tapmona_textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
 
         Random rand = new Random();
 
-        int randomNum = rand.nextInt((27 - 0) + 1) + 0;
+        int randomNum = rand.nextInt((49 - 0) + 1) + 0;
 
         return randomNum;
     }
