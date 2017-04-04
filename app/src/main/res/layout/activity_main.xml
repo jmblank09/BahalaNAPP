@@ -93,6 +93,15 @@
                 android:id="@+id/top10_textView"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:background="@drawable/progressbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/top10_textView"
+                android:layout_centerHorizontal="true" />
         </RelativeLayout>
 
     </LinearLayout>

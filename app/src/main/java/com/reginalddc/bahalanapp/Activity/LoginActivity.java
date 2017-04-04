@@ -1,5 +1,6 @@
 package com.reginalddc.bahalanapp.Activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText username_editText, password_editText;
     Button login_button, signup_button;
+    ProgressDialog prgDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +47,16 @@ public class LoginActivity extends AppCompatActivity {
         login_button.setTypeface(typeface);
         signup_button.setTypeface(typeface);
 
+        prgDialog = new ProgressDialog(this);
+        prgDialog.setTitle("Logging In");
+        prgDialog.setMessage("Please wait...");
+        prgDialog.setCancelable(false);
+
     }
 
     public void loginAccount(View view) throws UnsupportedEncodingException, JSONException {
 
-
+        prgDialog.show();
         RequestParams params = new RequestParams();
 
         final AsyncHttpClient client = new AsyncHttpClient();
@@ -76,6 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                     client1.get("http://107.170.61.180/BahalaNAPP_API/users/" + userId, new AsyncHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            prgDialog.dismiss();
                             try {
                                 String response = new String(responseBody, "UTF-8");
                                 JSONObject obj = new JSONObject(response);
@@ -93,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            prgDialog.dismiss();
                             try {
                                 String response = new String(responseBody, "UTF-8");
                                 JSONObject obj = new JSONObject(response);
@@ -111,6 +120,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable error) {
+                prgDialog.dismiss();
                 try {
                     String response = new String(errorResponse, "UTF-8");
                     JSONObject obj = new JSONObject(response);

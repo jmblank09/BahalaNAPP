@@ -1,13 +1,17 @@
 package com.reginalddc.bahalanapp.Activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView signup_textView, tapmona_textView, top10_textView, allResto_textView;
     Button bahalana_button;
+    ProgressBar progressBar;
     int RandomResto = 0;
 
     @Override
@@ -51,15 +56,18 @@ public class MainActivity extends AppCompatActivity {
         allResto_textView.setTypeface(typeface);
         bahalana_button.setTypeface(typeface);
         bahalana_button.setEnabled(false);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
         invokeWS();
     }
 
     private void invokeWS(){
+        progressBar.setVisibility(View.VISIBLE);
         AsyncHttpClient client1 = new AsyncHttpClient();
         client1.get("http://107.170.61.180/BahalaNAPP_API/resto" , new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
+                    progressBar.setVisibility(View.GONE);
                     String response = new String(responseBody, "UTF-8");
                     JSONArray obj = new JSONArray(response);
                     Resto resto = new Resto(obj);
@@ -73,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 try {
+                    progressBar.setVisibility(View.GONE);
                     String response = new String(responseBody, "UTF-8");
                     JSONObject obj = new JSONObject(response);
                     JSONObject err = new JSONObject("error");
@@ -125,11 +134,34 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(user.getUser_ID() != 0) {
-                    Toast.makeText(getApplicationContext(), "LOGOUT KA NA BOY", Toast.LENGTH_LONG).show();
+                    AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(MainActivity.this);
+                    dlgAlert.setCancelable(false);
+                    dlgAlert.setMessage("Are you sure you want to Logout?");
+                    dlgAlert.setPositiveButton("No",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //do nothing
+                                }
+                            });
+
+                    dlgAlert.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            user.setUser_ID(0);
+                            user.setFirstName("");
+                            user.setToken("");
+                            user.setUsername("");
+                            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                    final AlertDialog alert = dlgAlert.create();
+                    alert.show();
                 } else {
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(intent);
                 }
+
+
             }
         });
 
