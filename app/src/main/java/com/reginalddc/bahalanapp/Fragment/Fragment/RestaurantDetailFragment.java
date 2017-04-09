@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.reginalddc.bahalanapp.Model.Resto;
 import com.reginalddc.bahalanapp.R;
 
 /**
@@ -58,7 +59,16 @@ public class RestaurantDetailFragment extends Fragment {
         detail_location.setTypeface(typeface);
         title_rate.setTypeface(typeface);
 
-        fragment = inflater.inflate(R.layout.fragment_restaurant_detail, container, false);
+        willView();
         return fragment;
+    }
+
+    private void willView() {
+        detail_opening.setText(Resto.getSelectedRestoHours());
+        detail_best.setText(Resto.getSelectedRestoBest());
+        detail_price.setText(Resto.getSelectedRestoPrice());
+        detail_contact.setText(Resto.getSelectedRestoContact());
+        detail_visit.setText(Resto.getSelectedRestoVisit());
+        detail_location.setText(Resto.getSelectedRestoDetailedLoc());
     }
 }

@@ -52,7 +52,7 @@ public class RestaurantsActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
 
         String arrayName[] = Resto.getRestoName();
-        int arrayId[] = Resto.getRestoId();
+        final int arrayId[] = Resto.getRestoId();
         if (arrayName.length > 0) {
             for (int i = 0; i < arrayName.length; i++){
                 int rank = i + 1;
@@ -64,8 +64,7 @@ public class RestaurantsActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), adapter.getItem(position).name, Toast.LENGTH_LONG).show();
-
+                Resto.setSelectedRestoId(arrayId[position]);
                 Intent intent = new Intent(RestaurantsActivity.this, SpecificRestaurantActivity.class);
                 startActivity(intent);
             }

@@ -1,5 +1,6 @@
 package com.reginalddc.bahalanapp.Activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -9,10 +10,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.support.v4.app.FragmentManager;
+import android.widget.Toast;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.reginalddc.bahalanapp.Fragment.Fragment.RestaurantDetailFragment;
+import com.reginalddc.bahalanapp.Model.Resto;
 import com.reginalddc.bahalanapp.Model.User;
 import com.reginalddc.bahalanapp.R;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
 
 //fragments
 
@@ -87,10 +97,44 @@ public class SpecificRestaurantActivity extends AppCompatActivity {
             }
         });
 
-        willView();
+
+        invokeWS();
+    }
+
+    private void invokeWS(){
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get("http://107.170.61.180/BahalaNAPP_API/resto/" + Resto.getSelectedRestoId() , new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    String response = new String(responseBody, "UTF-8");
+                    JSONObject obj = new JSONObject(response);
+                    Resto resto = new Resto(obj);
+                    resto.specificRestoDataRetrieval();
+                    willView();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                try {
+                    String response = new String(responseBody, "UTF-8");
+                    JSONObject obj = new JSONObject(response);
+                    JSONObject err = new JSONObject("error");
+                    String error_response = err.getString("detail");
+
+                    Toast.makeText(getApplicationContext(), error_response, Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private void willView(){
+        resto_title_textView.setText(Resto.getSelectedRestoName());
         final FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.fragment_layout, new RestaurantDetailFragment()).commit();
 

@@ -63,8 +63,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void invokeWS(){
         progressBar.setVisibility(View.VISIBLE);
-        AsyncHttpClient client1 = new AsyncHttpClient();
-        client1.get("http://107.170.61.180/BahalaNAPP_API/resto" , new AsyncHttpResponseHandler() {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get("http://107.170.61.180/BahalaNAPP_API/resto" , new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.resto_listView);
         listView.setAdapter(adapter);
         String arrayName[] = Resto.getRestoName();
-        int arrayId[] = Resto.getRestoId();
+        final int arrayId[] = Resto.getRestoId();
         if (arrayName.length > 0) {
             for (int i = 0; i < 10; i++){
                 int rank = i + 1;
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), adapter.getItem(position).name, Toast.LENGTH_LONG).show();
+                Resto.setSelectedRestoId(arrayId[position]);
                 Intent intent = new Intent(MainActivity.this, SpecificRestaurantActivity.class);
                 startActivity(intent);
             }

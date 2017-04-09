@@ -67,7 +67,6 @@
             android:layout_height="wrap_content"
             android:layout_weight=".1"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/resto_name"
             android:textSize="25sp"
             android:textColor="@color/blackColor"
             android:id="@+id/resto_title_textView"
