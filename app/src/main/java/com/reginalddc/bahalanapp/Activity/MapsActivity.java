@@ -11,6 +11,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -20,6 +21,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     TextView back_textView;
+    private String receivedName;
+    private double receivedLat;
+    private double receivedLong;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +64,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in IICS and move the camera
-        LatLng iics = new LatLng(14.610165, 120.991958);
-        mMap.addMarker(new MarkerOptions().position(iics).title("IICS"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(iics));
+        Intent receivedIntent = getIntent();
+        if(receivedIntent != null) {
+            receivedName = receivedIntent.getStringExtra("NameOfResto");
+            receivedLat = Double.parseDouble(receivedIntent.getStringExtra("LatOfResto"));
+            receivedLong = Double.parseDouble(receivedIntent.getStringExtra("LongOfResto"));
+
+            if((receivedName != null)) {
+                if(!receivedName.equals("")) {
+                    // Add a marker in IICS and move the camera
+                    LatLng resto = new LatLng(receivedLat, receivedLong);
+                    mMap.addMarker(new MarkerOptions().position(resto).title(receivedName));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(resto, 18));
+                }
+            }
+        }
+
     }
 }

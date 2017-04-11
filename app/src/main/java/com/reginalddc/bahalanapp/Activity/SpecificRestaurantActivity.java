@@ -150,6 +150,9 @@ public class SpecificRestaurantActivity extends AppCompatActivity {
             public void onClick(View v) {
 //                fragmentManager.beginTransaction().replace(R.id.fragment_layout, new MapFragment()).commit();
                 Intent intent = new Intent(SpecificRestaurantActivity.this, MapsActivity.class);
+                intent.putExtra("NameOfResto", Resto.getSelectedRestoName());
+                intent.putExtra("LatOfResto", Resto.getSelectedRestoLatitude());
+                intent.putExtra("LongOfResto", Resto.getSelectedRestoLongitude());
                 startActivity(intent);
             }
         });
