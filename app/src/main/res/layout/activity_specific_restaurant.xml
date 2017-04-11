@@ -53,13 +53,13 @@
         android:layout_weight=".33"
         android:orientation="vertical">
         <ImageView
-            android:layout_width="186dp"
+            android:layout_width="168dp"
             android:layout_height="0dp"
             android:layout_gravity="center"
             android:layout_weight=".9"
-            android:src="@drawable/dimsum"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
+            android:id="@+id/specificResto_imageView"
             android:background="@drawable/redborder"/>
 
         <TextView
@@ -99,6 +99,13 @@
                 android:id="@+id/profile_description">
 
             </TextView>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true" />
 
             <TextView
                 android:layout_width="0dp"

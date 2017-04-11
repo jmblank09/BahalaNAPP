@@ -23,6 +23,7 @@ public class Resto {
     private static String selectedRestoLongitude;
     private static String selectedRestoLatitude;
     private static int selectedRestoRating;
+    private static String selectedRestoImage;
 
     public Resto() {}
 
@@ -134,6 +135,14 @@ public class Resto {
         Resto.selectedRestoRating = selectedRestoRating;
     }
 
+    public static String getSelectedRestoImage() {
+        return selectedRestoImage;
+    }
+
+    public static void setSelectedRestoImage(String selectedRestoImage) {
+        Resto.selectedRestoImage = selectedRestoImage;
+    }
+
     public void dataRetrieval() {
         try {
             restoId = new int[0];
@@ -157,12 +166,18 @@ public class Resto {
             selectedRestoHours = obj1.getString("opening_hours");
             selectedRestoBest = obj1.getString("best_seller");
             selectedRestoPrice = obj1.getString("price_range");
-            selectedRestoContact = "STATIC PA TO: 09221234567";
+
+            if(obj1.getString("contact_us") != "null")
+                selectedRestoContact = obj1.getString("contact_us");
+            else
+                selectedRestoContact = "None";
+
             selectedRestoVisit = obj1.getString("visit_us");
             selectedRestoDetailedLoc = obj1.getString("detailed_location");
             selectedRestoLongitude = obj1.getString("geo_long_loc");
             selectedRestoLatitude = obj1.getString("geo_lat_loc");
             selectedRestoRating = obj1.getInt("rating");
+            selectedRestoImage = obj1.getString("image_url");
 
         } catch (Exception e) {}
     }

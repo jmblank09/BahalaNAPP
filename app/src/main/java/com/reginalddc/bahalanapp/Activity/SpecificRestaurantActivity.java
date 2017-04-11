@@ -3,11 +3,15 @@ package com.reginalddc.bahalanapp.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.support.v4.app.FragmentManager;
 import android.widget.Toast;
@@ -18,9 +22,12 @@ import com.reginalddc.bahalanapp.Fragment.Fragment.RestaurantDetailFragment;
 import com.reginalddc.bahalanapp.Model.Resto;
 import com.reginalddc.bahalanapp.Model.User;
 import com.reginalddc.bahalanapp.R;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.net.URL;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -30,6 +37,8 @@ public class SpecificRestaurantActivity extends AppCompatActivity {
 
     TextView back_textView, user_textView, resto_textView, resto_title_textView,
             profile_description_textView, map_location_textView;
+    ProgressBar progressBar;
+    ImageView imageview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +50,9 @@ public class SpecificRestaurantActivity extends AppCompatActivity {
         resto_title_textView = (TextView) findViewById(R.id.resto_title_textView);
         profile_description_textView = (TextView) findViewById(R.id.profile_description);
         map_location_textView = (TextView) findViewById(R.id.map_location);
+        imageview = (ImageView)findViewById(R.id.specificResto_imageView);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/arial_rounded.ttf");
 
         back_textView.setTypeface(typeface);
@@ -102,6 +114,7 @@ public class SpecificRestaurantActivity extends AppCompatActivity {
     }
 
     private void invokeWS(){
+        progressBar.setVisibility(View.VISIBLE);
         AsyncHttpClient client = new AsyncHttpClient();
         client.get("http://107.170.61.180/BahalaNAPP_API/resto/" + Resto.getSelectedRestoId() , new AsyncHttpResponseHandler() {
             @Override
@@ -112,6 +125,7 @@ public class SpecificRestaurantActivity extends AppCompatActivity {
                     Resto resto = new Resto(obj);
                     resto.specificRestoDataRetrieval();
                     willView();
+                    progressBar.setVisibility(View.GONE);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -135,6 +149,13 @@ public class SpecificRestaurantActivity extends AppCompatActivity {
 
     private void willView(){
         resto_title_textView.setText(Resto.getSelectedRestoName());
+
+        //set the image
+        if(!Resto.getSelectedRestoImage().equals("null"))
+            Picasso.with(this).load("http://" + Resto.getSelectedRestoImage()).into(imageview);
+        else
+            Picasso.with(this).load("http://107.170.61.180/bahalanapp_images/unknown.png").into(imageview);
+
         final FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.fragment_layout, new RestaurantDetailFragment()).commit();
 
