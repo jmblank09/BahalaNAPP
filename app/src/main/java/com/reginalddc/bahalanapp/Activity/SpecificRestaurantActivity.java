@@ -1,5 +1,6 @@
 package com.reginalddc.bahalanapp.Activity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,14 +11,18 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.support.v4.app.FragmentManager;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.reginalddc.bahalanapp.Fragment.Fragment.RestaurantDetailFragment;
 import com.reginalddc.bahalanapp.Model.Resto;
 import com.reginalddc.bahalanapp.Model.User;
@@ -25,20 +30,28 @@ import com.reginalddc.bahalanapp.R;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
 
 //fragments
 
 public class SpecificRestaurantActivity extends AppCompatActivity {
 
-    TextView back_textView, user_textView, resto_textView, resto_title_textView,
-            profile_description_textView, map_location_textView;
+    TextView back_textView, user_textView, resto_title_textView,
+            profile_description_textView, map_location_textView, title_rate;
     ProgressBar progressBar;
     ImageView imageview;
+    RelativeLayout rate_us;
+    Dialog rankDialog;
+    RatingBar ratingBar;
+
+    String rating = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +65,8 @@ public class SpecificRestaurantActivity extends AppCompatActivity {
         map_location_textView = (TextView) findViewById(R.id.map_location);
         imageview = (ImageView)findViewById(R.id.specificResto_imageView);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        title_rate = (TextView) findViewById(R.id.title_rate);
+        rate_us = (RelativeLayout) findViewById(R.id.rate);
 
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/arial_rounded.ttf");
 
@@ -64,9 +79,33 @@ public class SpecificRestaurantActivity extends AppCompatActivity {
 
         if(user.getUser_ID() != 0) {
             user_textView.setText("Hi, " + user.getFirstName() + "!");
+            rate_us.setVisibility(View.VISIBLE);
         } else {
             user_textView.setText(getText(R.string.login));
         }
+
+        title_rate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rankDialog = new Dialog(SpecificRestaurantActivity.this, R.style.FullHeightDialog);
+                rankDialog.setContentView(R.layout.rank_dialog);
+                rankDialog.setCancelable(true);
+                ratingBar = (RatingBar)rankDialog.findViewById(R.id.dialog_ratingbar);
+
+                TextView text = (TextView) rankDialog.findViewById(R.id.rank_dialog_text1);
+                Button updateButton = (Button) rankDialog.findViewById(R.id.rank_dialog_button);
+
+                ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                    @Override
+                    public void onRatingChanged(RatingBar arg0, float arg1, boolean arg2) {
+                        rating = Float.toString(arg1);
+                    }
+                });
+
+                //now that the dialog is set up, it's time to show it
+                rankDialog.show();
+            }
+        });
 
         user_textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,10 +152,54 @@ public class SpecificRestaurantActivity extends AppCompatActivity {
         invokeWS();
     }
 
+    public void addRating(View view) throws UnsupportedEncodingException, JSONException {
+        RequestParams params = new RequestParams();
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        JSONObject jsonParams = new JSONObject();
+
+        jsonParams.put("rating", rating);
+
+        StringEntity entity = new StringEntity(jsonParams.toString());
+
+        client.addHeader("Authorization", User.getToken());
+
+        client.put(null, "http://107.170.61.180/BahalaNAPP_API/resto/" + Resto.getSelectedRestoId(), entity, "application/json", new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    String response = new String(responseBody, "UTF-8");
+                    JSONObject obj = new JSONObject(response);
+                    JSONObject success = obj.getJSONObject("success");
+                    String success_response = success.getString("detail");
+
+                    Toast.makeText(getApplicationContext(), success_response, Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable error){
+                try {
+                    String response = new String(errorResponse, "UTF-8");
+                    JSONObject obj = new JSONObject(response);
+                    JSONObject err = obj.getJSONObject("error");
+                    String error_response = err.getString("detail");
+
+                    Toast.makeText(getApplicationContext(), obj.toString(), Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        rankDialog.dismiss();
+    }
+
     private void invokeWS(){
         progressBar.setVisibility(View.VISIBLE);
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://107.170.61.180/BahalaNAPP_API/resto/" + Resto.getSelectedRestoId() , new AsyncHttpResponseHandler() {
+        client.get("http://107.170.61.180/BahalaNAPP_API/resto/" + Resto.getSelectedRestoId(), new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {

@@ -18,7 +18,7 @@ public class RestaurantDetailFragment extends Fragment {
 
     TextView title_opening, detail_opening, title_best, detail_best, title_price, detail_price,
             title_contact, detail_contact, title_visit, detail_visit, title_location,
-            detail_location, title_rate;
+            detail_location;
 
     public RestaurantDetailFragment() {
         // Required empty public constructor
@@ -41,7 +41,6 @@ public class RestaurantDetailFragment extends Fragment {
         detail_visit = (TextView) fragment.findViewById(R.id.detail_visit);
         title_location = (TextView) fragment.findViewById(R.id.title_location);
         detail_location = (TextView) fragment.findViewById(R.id.detail_location);
-        title_rate = (TextView) fragment.findViewById(R.id.title_rate);
 
         Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/arial_rounded.ttf");
 
@@ -57,7 +56,6 @@ public class RestaurantDetailFragment extends Fragment {
         detail_visit.setTypeface(typeface);
         title_location.setTypeface(typeface);
         detail_location.setTypeface(typeface);
-        title_rate.setTypeface(typeface);
 
         willView();
         return fragment;

@@ -125,8 +125,25 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight=".5"
+        android:layout_weight=".42"
         android:id="@+id/fragment_layout">
 
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".08"
+        android:visibility="invisible"
+        android:id="@+id/rate">
+        <TextView
+            android:id="@+id/title_rate"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:gravity="center"
+            android:text="@string/rate_us"
+            android:textColor="@color/redColor"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
     </RelativeLayout>
 </LinearLayout>

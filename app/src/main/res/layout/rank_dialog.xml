@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:layout_margin="2dp"
+    android:background="@color/whiteColor">
+
+    <TextView
+        android:id="@+id/rank_dialog_text1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="Rate the restaurant depending on your experience"
+        android:textColor="@color/blackColor"
+        android:textSize="18dp" />
+
+    <RatingBar
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:id="@+id/dialog_ratingbar"
+        android:layout_gravity="center"
+        android:numStars="5"
+        android:stepSize="1.0"
+        android:isIndicator="false"
+        android:theme="@style/RatingBar"/>
+
+    <Button android:id="@+id/rank_dialog_button"
+        android:layout_height="wrap_content"
+        android:text="RATE"
+        android:textStyle="bold"
+        android:focusable="false"
+        android:background="@color/lightGrayColor"
+        android:textSize="20dip"
+        android:textColor="@color/redColor"
+        android:layout_width="fill_parent"
+        android:theme="@style/button"
+        android:onClick="addRating" />
+
+</LinearLayout>

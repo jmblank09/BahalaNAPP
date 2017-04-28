@@ -8,4 +8,20 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="FullHeightDialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/lightGrayColor</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/blackColor</item>
+        <item name="colorControlActivated">@color/yellowColor</item>
+    </style>
+
+    <style name="button" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/whiteColor</item>
+        <item name="colorControlActivated">@color/whiteColor</item>
+    </style>
 </resources>
